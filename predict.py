@@ -129,7 +129,7 @@ def predict_stock(file_path):
     rf_model.fit(X_train_scaled, y_train)
 
     # Predict on test data
-    xgb_model = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
+    xgb_model = XGBClassifier( eval_metric='logloss', random_state=42)
     xgb_model.fit(X_train_scaled, y_train)
 
 
