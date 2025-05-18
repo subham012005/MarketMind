@@ -12,6 +12,12 @@ from predict import predict_stock
 from stock_csv_maker import download_stock_data
 import plotly.express as px 
 # Helper Functions
+st.set_page_config(
+    page_title="MarketMind AI - Stock Trend Prediction",  # Page title
+    page_icon="https://i.ibb.co/5gwzqB9n/logo2.png",         # Favicon (the image URL)
+    layout="centered",
+    initial_sidebar_state="expanded"
+    )
 def valid_stock(stock):
     try:
         return True
@@ -72,12 +78,7 @@ def show_plotly(fig):
 
 # Main App
 def Main():
-    st.set_page_config(
-    page_title="MarketMind AI - Stock Trend Prediction",  # Page title
-    page_icon="https://i.ibb.co/5gwzqB9n/logo2.png",         # Favicon (the image URL)
-    layout="centered",
-    initial_sidebar_state="expanded"
-    )
+    
     st.markdown(
     """
     <h1 style="text-align:center;">
