@@ -45,11 +45,14 @@ def load_reviews_from_csv(filename="reviews.csv"):
         return pd.DataFrame(columns=["Name", "Review", "Rating", "Timestamp"])
 
 def save_review_to_csv(name, review, rating, filename="reviews.csv"):
+    # Get the current timestamp
+    current_timestamp = pd.Timestamp.now()
+    formatted_timestamp = current_timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f')
     new_entry = pd.DataFrame([{
         "Name": name,
         "Review": review,
         "Rating": rating,
-        "Timestamp": pd.Timestamp.now()
+        "Timestamp": formatted_timestamp
     }])
     
     # Append to file or create if not exists
@@ -248,7 +251,7 @@ def Main():
                         f'`{dt}` {n["content"]["provider"]["displayName"]}: [{n["content"]["title"]}]({n["content"]["canonicalUrl"]["url"]})'
                     )
     st.markdown("---")
-    st.subheader("📘 About MarketMind AI")
+    st.header("📘 About MarketMind AI")
     # --- EXTRA SECTIONS AFTER PREDICTION ---
     st.markdown("\n\n\n")
     st.expander("How to Use MarketMind AI", expanded=True).markdown("""
@@ -387,20 +390,21 @@ def Main():
         submitted = st.form_submit_button("Submit Review")
 
     if submitted:
-        
-        # save_review_to_csv(name, review, rating)
+        save_review_to_csv(name, review, rating)
         st.success("✅ Thank you for your feedback!")
-        # st.markdown("We are facing some issue while submitting. This report is sent to admin, we will sort it out, SOON \n Thanks For Using our service.")
 
     # --- Display Reviews ---
     st.subheader("📣 Recent Review")
     review_df = load_reviews_from_csv()
 
     if not review_df.empty:
-        review_df.sort_values(by='Timestamp', ascending=True).head(5)
-        st.markdown(f""" 
-                   {row['Name']}  ⭐ {int(row['Rating'])}/5   :   {row['Review']}
-        """)    
+        review_df = review_df.sort_values(by='Timestamp', ascending=False)
+        review_df = review_df.head(1)    
+        for _, row in review_df.iterrows():
+            st.markdown(f"""
+            - {row['Name']}  ⭐ {int(row['Rating'])}/5   :    
+            |  {row['Review']}
+            """)
     else:
         st.info("No reviews yet. Be the first to submit one!")
 
