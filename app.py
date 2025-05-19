@@ -387,8 +387,10 @@ def Main():
         submitted = st.form_submit_button("Submit Review")
 
     if submitted:
-        save_review_to_csv(name, review, rating)
+        
+        # save_review_to_csv(name, review, rating)
         st.success("✅ Thank you for your feedback!")
+        st.markdown("We are facing some issue while submitting. This report is sent to admin, we will sort it out, SOON \n Thanks For Using our service.")
 
     # --- Display Reviews ---
     st.subheader("📣 Recent Review")
