@@ -94,9 +94,16 @@ def Main():
     # Sidebar
     st.sidebar.header("Enter Stock Information")
     ticker = tickers_parser(st.sidebar.text_input("Enter a Stock Ticker", "AAPL"), max_items=1)
-    start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2021-01-01"))
-    end_date = st.sidebar.date_input("End Date", pd.to_datetime("2022-01-01"))
-
+    start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2021-01-01"),max_value=datetime.today())
+    end_date = st.sidebar.date_input("End Date", datetime.today(),max_value=datetime.today())
+    try:
+        if start_date > end_date:
+            st.sidebar.error("Start date must be before end date.")
+            return
+    except Exception as e:
+        st.sidebar.error("Invalid date range. Please check your dates.")
+        return
+    st.sidebar.markdown("---")
     with st.sidebar.expander("Configure", expanded=True):
         show_ohlc = st.checkbox("Show OHLC Chart", value=True)
         show_volume = st.checkbox("Show Volume", value=True)
